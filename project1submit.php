@@ -10,7 +10,43 @@
 
                 $error = false;
 
+                $age_range;
+                $gender;
+                $language;
+                $experience;
+                $email;
+
                 if (password_verify($userEnteredPassword, $globalPassHash)) { //checks if password is correct before doing anything else, and sets an error flag if password is incorrect
+
+                    $email = filter_var($_POST["email-name"], FILTER_SANITIZE_EMAIL); //Sanitize and store email
+
+                    if (empty($email) || !filter_var($email, FILTER_VALIDATE_EMAIL)) { //Sets an error flag if email is empty or if it doesn't follow a standard email format
+                        $error = true; 
+                    } 
+
+                    if (isset($_POST["age"])) { //checks if age radio button is selected, and stores the value or sets an error flag if nothing is selected
+                        $age_range = $_POST["age"];
+                    } else {
+                        $error = true;
+                    }
+
+                    $gender = $_POST["gender"];
+
+                    if(empty($gender)) { //sets an error flag if no gender is selected
+                        $error = true;
+                    }
+
+                    $language = trim(filter_var($_POST["language"], FILTER_SANITIZE_SPECIAL_CHARS)); //Stores user entered language and sanitizes it by removing whitespace and some special characters
+
+                    if (empty($language) || !ctype_alpha($language)) { //sets an error flag if the language is either empty or contains non-alphanumeric characters
+                        $error = true;
+                    }
+
+                    $experience = filter_var($_POST["number"], FILTER_SANITIZE_NUMBER_INT); //stores years of programming experience and sanitizes the input
+
+                    if (!isset($experience) || $experience < 0 || $experience > 99) { //sets an error flag if no value was entered or the number of years is not between 0 and 99
+                        $error = true;
+                    }
 
                 }
                 else {
@@ -21,6 +57,14 @@
                 {
                     header("Location: project1error.php");
                 }
+
+                //echo saved values for testing
+                echo "Email: " . $email. "<br>";
+                echo "Password: " . $userEnteredPassword. "<br>";
+                echo "Age Range: " . $age_range. "<br>";
+                echo "Gender: " . $gender. "<br>";
+                echo "Primary Language: " . $language. "<br>";
+                echo "Years of Programming Experience: " . $experience. "<br>";
             ?>
             <form action="project1starter.php" method="post" class="survey-form">
             <button type="submit" name="return-to-survey" id="submit-button">Return To survey</button>
