@@ -52,7 +52,16 @@
 </select>
 
 <!-- TODO: Add your own survey questions -->
+<fieldset>
+    <legend> What language do you primarily speak? </legend> <!--  -->
+    <input type = "text" name="language" id="language">Enter your answer here...</textarea>
+</fieldset>
 
+<fieldset>
+    <legend> How many years of programming experience do you have? </legend> <!--  -->
+    <input type="number"  name="number" id="number" required>Enter your answer here...</textarea>
+</fieldset>
+<button type="submit" name="submit-button" id="submit-button">Submit</button>
 </form>
 
 <!-- TODO: All the backend PHP/SQL stuff! (you may need a separate file for this!) -->
