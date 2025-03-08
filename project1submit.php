@@ -53,18 +53,37 @@
                     $error = true;
                 }
 
-                if($error) //if the error flag was set at any point, redirect the user to project1error.php
+                if($error) //if the error flag was set at any point, redirect the user to project1error.php. only tries to upload to database if $error = false
                 {
                     header("Location: project1error.php");
                 }
+                else 
+                {
+                    //echo saved values for testing
+                    echo "Email: " . $email. "<br>";
+                    echo "Password: " . $userEnteredPassword. "<br>";
+                    echo "Age Range: " . $age_range. "<br>";
+                    echo "Gender: " . $gender. "<br>";
+                    echo "Primary Language: " . $language. "<br>";
+                    echo "Years of Programming Experience: " . $experience. "<br>";
 
-                //echo saved values for testing
-                echo "Email: " . $email. "<br>";
-                echo "Password: " . $userEnteredPassword. "<br>";
-                echo "Age Range: " . $age_range. "<br>";
-                echo "Gender: " . $gender. "<br>";
-                echo "Primary Language: " . $language. "<br>";
-                echo "Years of Programming Experience: " . $experience. "<br>";
+                    require('dbconfig.php'); //include config file
+                    $db = connectDB(); //connect to database 
+
+                    $select = $db->prepare("SELECT COUNT(*) FROM project1_data WHERE email = ?"); //prepared statement to count how many times an email was used
+                    $select->execute([$email]); //execute prepared statement to count number of times the user supplied email was used
+                    $check_email = $select->fetch(); //store data in $check_email
+
+                    if($check_email[0] == 0){ //checks if there are no emails in the database that match the user entered email
+                        $prepared_stat = $db->prepare("INSERT INTO project1_data (email, age_range, gender, language, experience) VALUES (?, ?, ?, ?, ?)"); //prepared statement to add data to table
+                        $prepared_stat->execute(array($email, $age_range, $gender, $language, $experience)); //execute prepared statement with user supplied data    
+                        echo "Your results have been submitted, thanks for taking the survey"   
+                    }
+                    else //displays message to user that their results were not submitted
+                    {
+                        echo "Thanks for taking the survey again; because you've already submitted results with this email they will not be uploaded";
+                    }
+                }
             ?>
             <form action="project1starter.php" method="post" class="survey-form">
             <button type="submit" name="return-to-survey" id="submit-button">Return To survey</button>
