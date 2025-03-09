@@ -87,6 +87,8 @@
             ?>
             <form action="project1starter.php" method="post" class="survey-form">
             <button type="submit" name="return-to-survey" id="submit-button">Return To survey</button>
+            <form action="project1results.php" method="post" class="survey-form">
+            <button type="submit" name="results-page" id="results-button">Results Page</button>
           </body>
     </html>
     </doctype>

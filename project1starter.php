@@ -63,6 +63,8 @@
 </fieldset>
 <button type="submit" name="submit-button" id="submit-button">Submit</button>
 </form>
+<form action="project1results.php" method="post" class="survey-form">
+<button type="submit" name="results-page" id="results-button">Results Page</button>
 
 <!-- TODO: All the backend PHP/SQL stuff! (you may need a separate file for this!) -->
 
