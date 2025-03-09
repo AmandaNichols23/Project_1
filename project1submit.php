@@ -77,7 +77,7 @@
                     if($check_email[0] == 0){ //checks if there are no emails in the database that match the user entered email
                         $prepared_stat = $db->prepare("INSERT INTO project1_data (email, age_range, gender, language, experience) VALUES (?, ?, ?, ?, ?)"); //prepared statement to add data to table
                         $prepared_stat->execute(array($email, $age_range, $gender, $language, $experience)); //execute prepared statement with user supplied data    
-                        echo "Your results have been submitted, thanks for taking the survey"   
+                        echo "Your results have been submitted, thanks for taking the survey";
                     }
                     else //displays message to user that their results were not submitted
                     {
@@ -87,8 +87,10 @@
             ?>
             <form action="project1starter.php" method="post" class="survey-form">
             <button type="submit" name="return-to-survey" id="submit-button">Return To survey</button>
+            </form>
             <form action="project1results.php" method="post" class="survey-form">
             <button type="submit" name="results-page" id="results-button">Results Page</button>
+            </form>
           </body>
     </html>
     </doctype>

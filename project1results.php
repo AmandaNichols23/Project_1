@@ -54,12 +54,21 @@
                         echo "</div>";
                         break;
 
-                    case 'email': //Displays all emails
+                    case 'email': //Displays all emails, and 3 random emails at the top of the page
+                        $select = $db->prepare("SELECT email FROM project1_data ORDER BY RAND() LIMIT 3"); //select 3 random emails from email column of table
+                        $select->execute();
+                        $info = $select->fetchAll();
+                        echo '<div style="width: 150px; font-weight: bold;">3 Random Emails</div>';
+                        foreach($info as $row) { //loop through each row
+                            echo '<div style="width: 150px; margin-right: 30px;">' . $row['email'] . '</div>';
+                        }
+
+
                         $select = $db->prepare("SELECT email FROM project1_data"); //select email column of table
                         $select->execute();
                         $info = $select->fetchAll();
 
-                        echo '<div style="width: 150px; font-weight: bold;">Email</div>';
+                        echo '<div style="width: 150px; font-weight: bold;">All Emails</div>';
                         foreach($info as $row) { //loop through each row
                             echo '<div style="width: 150px; margin-right: 30px;">' . $row['email'] . '</div>';
                         }
@@ -69,6 +78,33 @@
                         $select = $db->prepare("SELECT age_range FROM project1_data"); //select age range column of table
                         $select->execute();
                         $info = $select->fetchAll();
+
+                        $gender_count = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; //counts number of occurances of all age ranges and stores the counts in an array
+                        foreach($info as $row){ 
+                            switch($row['age_range']){
+                                case '0-12': $gender_count[0] ++; break; case '13-17': $gender_count[1] ++; break; case '18-22': $gender_count[2] ++; break;
+                                case '23-27': $gender_count[3] ++; break; case '28-32': $gender_count[4] ++; break; case '33-37': $gender_count[5] ++; break;
+                                case '38-42': $gender_count[6] ++; break; case '43-47': $gender_count[7] ++; break; case '48-52': $gender_count[8] ++; break;
+                                case '53-57': $gender_count[9] ++; break; case '58-62': $gender_count[10] ++; break; case '63-67': $gender_count[11] ++; break;
+                                case '68+': $gender_count[12] ++; break;
+                            }
+                        }
+
+                        echo '<div style="width: 150px; font-weight: bold;">Age Range Totals</div>'; //Display the total counts for each age range
+                        echo '<div style="width: 150px; margin-right: 30px;">'."0-12: $gender_count[0]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."13-17: $gender_count[1]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."18-22: $gender_count[2]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."23-27: $gender_count[3]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."28-32: $gender_count[4]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."33-37: $gender_count[5]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."38-42: $gender_count[6]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."43-47: $gender_count[7]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."48-52: $gender_count[8]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."53-57: $gender_count[9]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."58-62: $gender_count[10]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."63-67: $gender_count[11]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."68+: $gender_count[12]" .'</div>';
+
                         echo '<div style="width: 150px; font-weight: bold;">Age Range</div>';
                         foreach($info as $row) { //loop through each row
                             echo '<div style="width: 150px; margin-right: 30px;">' . $row['age_range'] . '</div>';
@@ -79,17 +115,43 @@
                         $select = $db->prepare("SELECT gender FROM project1_data"); //select gender column of table
                         $select->execute();
                         $info = $select->fetchAll();
-                        echo '<div style="width: 150px; font-weight: bold;">Gender</div>';
+
+                        $gender_count = [0, 0, 0, 0, 0, 0]; //counts number of occurances of all genders and stores the counts in an array
+                        foreach($info as $row){ 
+                            switch($row['gender']){
+                                case 'm': $gender_count[0] ++; break; case 'f': $gender_count[1] ++; break; case 'nb': $gender_count[2] ++; break;
+                                case 'gf': $gender_count[3] ++; break; case 'a': $gender_count[4] ++; break; case 'o': $gender_count[5] ++; break;
+                            }
+                        }
+
+                        echo '<div style="width: 150px; font-weight: bold;">Gender Totals</div>'; //Display the total counts for each gender
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Male: $gender_count[0]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Female: $gender_count[1]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Nonbinary: $gender_count[2]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Genderfluid: $gender_count[3]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Agender: $gender_count[4]" .'</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">'."Other: $gender_count[5]" .'</div>';
+
+
+                        echo '<div style="width: 150px; font-weight: bold;">All Genders</div>';
                         foreach($info as $row) { //loop through each row
                             echo '<div style="width: 150px; margin-right: 30px;">' . $row['gender'] . '</div>';
                         }
                         break;
 
-                    case 'language': //Displays all language
+                    case 'language': //Displays all languages, and 3 random languages at the top of the page
+                        $select = $db->prepare("SELECT language FROM project1_data ORDER BY RAND() LIMIT 3"); //select 3 random languages from language column of table
+                        $select->execute();
+                        $info = $select->fetchAll();
+                        echo '<div style="width: 150px; font-weight: bold;">3 Random Languages</div>';
+                        foreach($info as $row) { //loop through each row
+                            echo '<div style="width: 150px; margin-right: 30px;">' . $row['language'] . '</div>';
+                        }
+
                         $select = $db->prepare("SELECT language FROM project1_data"); //select language column of table
                         $select->execute();
                         $info = $select->fetchAll();
-                        echo '<div style="width: 150px; font-weight: bold;">Language</div>';
+                        echo '<div style="width: 150px; font-weight: bold;">All Languages</div>';
                         foreach($info as $row) { //loop through each row
                             echo '<div style="width: 150px; margin-right: 30px;">' . $row['language'] . '</div>';
                         }
@@ -99,6 +161,21 @@
                         $select = $db->prepare("SELECT experience FROM project1_data"); //select experience column of table
                         $select->execute();
                         $info = $select->fetchAll();
+
+                        $avg_experience = 0;
+                        $counter = 0;
+
+                        foreach($info as $row) { //Adds all years of experience together to get an average
+                            $avg_experience += $row['experience'];
+                            $counter++;
+                        }
+
+                        if($counter != 0) { //calculates and displays average if counter isnt 0
+                        $avg_experience /= $counter;
+                        echo '<div style="width: 150px; font-weight: bold;">Average Experience</div>';
+                        echo '<div style="width: 150px; margin-right: 30px;">' . $avg_experience . '</div>';
+                        }
+
                         echo '<div style="width: 150px; font-weight: bold;">Years of Experience</div>';
                         foreach($info as $row) { //loop through each row
                             echo '<div style="width: 150px; margin-right: 30px;">' . $row['experience'] . '</div>';
